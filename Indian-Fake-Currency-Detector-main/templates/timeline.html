@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% set active_page = 'timeline' %}
+
+{% block title %}Project Timeline{% endblock %}
+
+{% block content %}
+  <main class="container pb-5">
+    <section class="page-header">
+      <span class="eyebrow">Build history</span>
+      <h1 class="page-title">How the project evolved from idea to web app</h1>
+      <p class="section-copy">A clearer timeline helps the project feel more grounded and gives visitors context on how it was developed.</p>
+    </section>
+
+    <section class="pb-4">
+      <div class="timeline-grid">
+        {% set events = [
+          ('01', 'January 2025', 'Planning began for a cleaner fake currency detection experience and updated project goals were defined.'),
+          ('02', 'March 2025', 'The core note-analysis pipeline was organized for use inside a Flask web application.'),
+          ('03', 'June 2025', 'Currency image samples and denomination handling were reviewed and refined for testing.'),
+          ('04', 'September 2025', 'The first complete browser-based upload and prediction flow was assembled.'),
+          ('05', 'December 2025', 'Result summaries and note-level confidence reporting were improved for easier reading.'),
+          ('06', 'January 2026', 'The interface was refreshed with a more meaningful layout and stronger visual hierarchy.'),
+          ('07', 'February 2026', 'Supporting pages such as About and Timeline were redesigned to match the main experience.'),
+          ('08', 'March 2026', 'The app was polished into a more consistent and presentation-ready fake note detector.')
+        ] %}
+
+        {% for index, month, description in events %}
+          <article class="timeline-card">
+            <div class="timeline-index">{{ index }}</div>
+            <h3>{{ month }}</h3>
+            <p class="mb-0 muted-copy">{{ description }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+{% endblock %}

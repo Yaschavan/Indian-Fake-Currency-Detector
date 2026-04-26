@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% set active_page = 'home' %}
+
+{% block title %}Verification Results{% endblock %}
+
+{% block content %}
+  <main class="container pb-5">
+    <section class="page-header">
+      <span class="eyebrow">Run complete</span>
+      <h1 class="page-title">Verification summary for detected note images</h1>
+      <p class="section-copy">Review the totals first, then inspect each uploaded note card below.</p>
+    </section>
+
+    <section class="pb-4">
+      <div class="summary-grid">
+        <div class="summary-item">
+          <strong>{{ summary.uploaded_count }}</strong>
+          <span>Images processed</span>
+        </div>
+        <div class="summary-item">
+          <strong>{{ summary.detected_count }}</strong>
+          <span>Denominations detected</span>
+        </div>
+        <div class="summary-item">
+          <strong>{{ summary.undetected_count }}</strong>
+          <span>Not identified</span>
+        </div>
+        <div class="summary-item">
+          <strong>{{ summary.genuine_count }}</strong>
+          <span>Marked genuine</span>
+        </div>
+        <div class="summary-item">
+          <strong>{{ summary.fake_count }}</strong>
+          <span>Marked fake</span>
+        </div>
+        <div class="summary-item">
+          <strong>Rs. {{ summary.genuine_total }}</strong>
+          <span>Total genuine amount</span>
+        </div>
+      </div>
+    </section>
+
+    {% if summary.note_breakdown %}
+      <section class="pb-4">
+        <div class="glass-card p-4">
+          <h2 class="section-title mb-3">Detected denominations</h2>
+          <div class="result-meta">
+            {% for note_value, count in summary.note_breakdown.items() %}
+              <div><strong>Rs. {{ note_value }}:</strong> {{ count }} image{% if count != 1 %}s{% endif %}</div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    <section class="pb-4">
+      <div class="result-grid">
+        {% for result in results %}
+          <article class="glass-card result-card">
+            <div class="result-frame">
+              <img src="/{{ result.image_path }}" alt="{{ result.filename }}">
+            </div>
+            <div class="pt-3">
+              {% set is_genuine = result.status == 'The note is Genuine' %}
+              {% set is_fake = result.status == 'The note is Fake' %}
+              <span class="status-pill {% if is_genuine %}genuine{% elif is_fake %}fake{% endif %}">
+                {% if is_genuine %}Genuine{% elif is_fake %}Fake{% else %}Not verified{% endif %}
+              </span>
+              <h2 class="section-title mt-3 mb-2">{{ result.filename }}</h2>
+              <div class="result-meta">
+                <div><strong>Denomination:</strong> {% if result.note_value %}Rs. {{ result.note_value }}{% else %}Not detected{% endif %}</div>
+                <div><strong>Detection status:</strong> {{ result.detection_status }}</div>
+                <div><strong>Detection result:</strong> {{ result.status }}</div>
+                <div><strong>Confidence score:</strong> {{ result.score }}%</div>
+                <div><strong>Stored in:</strong> {% if result.sorted_path %}{{ result.sorted_path }}{% else %}Not stored in a denomination folder{% endif %}</div>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <a href="{{ url_for('main') }}" class="btn btn-secondary-soft">Analyze another batch</a>
+  </main>
+{% endblock %}

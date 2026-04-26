@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% set active_page = 'about' %}
+
+{% block title %}About the Project{% endblock %}
+
+{% block content %}
+  <main class="container pb-5">
+    <section class="page-header">
+      <span class="eyebrow">Project context</span>
+      <h1 class="page-title">Why counterfeit detection needs a simple public-facing interface</h1>
+      <p class="section-copy">This project is aimed at making note verification more approachable for people who do not have access to bank-grade screening systems.</p>
+    </section>
+
+    <section class="spotlight pb-4">
+      <div class="glass-card content-card">
+        <div class="row align-items-center">
+          <div class="col-lg-5 mb-4 mb-lg-0 text-center">
+            <img src="{{ url_for('static', filename='about.svg') }}" alt="Illustration about counterfeit detection">
+          </div>
+          <div class="col-lg-7">
+            <h2 class="section-title">What this app is trying to solve</h2>
+            <p class="muted-copy">
+              Counterfeit currency affects everyday cash transactions, especially in situations where people cannot rely on digital payments. While banks and commercial systems often have dedicated hardware for verification, most individuals do not.
+            </p>
+            <p class="muted-copy mb-0">
+              This detector creates a simpler software-based workflow: upload the note image, choose the denomination, and view a confidence-backed result in a format that is easy to understand.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pb-4">
+      <div class="info-grid">
+        <article class="info-card">
+          <h3>Problem</h3>
+          <p class="mb-0 muted-copy">Fake currency creates trust issues in markets where cash still plays a major role.</p>
+        </article>
+        <article class="info-card">
+          <h3>Approach</h3>
+          <p class="mb-0 muted-copy">Image-based analysis is used to compare uploaded notes and classify them as genuine or fake.</p>
+        </article>
+        <article class="info-card">
+          <h3>Goal</h3>
+          <p class="mb-0 muted-copy">Present the output in a way that feels understandable, fast, and usable for common people.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+{% endblock %}

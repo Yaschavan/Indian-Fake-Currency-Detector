@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% set active_page = 'home' %}
+
+{% block title %}Indian Fake Note Detector{% endblock %}
+
+{% block content %}
+  <main class="container pb-5">
+    <section class="hero">
+      <div class="row align-items-stretch">
+        <div class="col-lg-7 mb-4 mb-lg-0">
+          <div class="hero-panel h-100">
+            <span class="eyebrow">Currency screening workflow</span>
+            <h1 class="display-title">Check Indian currency notes with a cleaner, guided upload flow.</h1>
+            <p class="hero-text">
+              Upload one or more note images, let the app identify whether each note is Rs. 10, 20, 50, 100, 200, or 500, and review the authenticity results in a structured summary.
+            </p>
+            <div class="hero-stats">
+              <div class="stat-chip">
+                <strong>6</strong>
+                <span>Supported note values</span>
+              </div>
+              <div class="stat-chip">
+                <strong>Batch</strong>
+                <span>Multiple images in one run</span>
+              </div>
+              <div class="stat-chip">
+                <strong>Instant</strong>
+                <span>Per-image status and confidence</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="glass-card upload-card h-100">
+            <h2 class="section-title">Start a verification run</h2>
+            <p class="section-copy mb-4">Use clear front-facing note images. The app can now detect the denomination automatically and place each upload into the matching folder.</p>
+
+            {% if error %}
+              <div class="alert alert-soft" role="alert">
+                {{ error }}
+              </div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
+              <div class="form-group mb-4">
+                <label class="field-label" for="image">Upload note images</label>
+                <label class="upload-dropzone" for="image">
+                  <span class="upload-icon">+</span>
+                  <span class="upload-title">Choose JPEG note images</span>
+                  <span class="upload-hint">You can select multiple files in one upload.</span>
+                </label>
+                <input class="hidden-file-input" type="file" id="image" name="image" accept=".jpg,.jpeg,.png" multiple>
+                <div class="file-feedback" id="file-feedback">No files selected yet.</div>
+              </div>
+
+              <div class="form-group mb-4">
+                <span class="field-label">Optional denomination override</span>
+                <p class="section-copy mb-3">Leave this blank to auto-detect whether the note is Rs. 10, 20, 50, 100, 200, or 500.</p>
+                <div class="note-grid">
+                  {% for value in ['10', '20', '50', '100', '200', '500'] %}
+                    <label class="note-choice">
+                      <input type="radio" name="optradio" value="{{ value }}">
+                      <span class="note-pill">Rs. {{ value }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-brand btn-block">Detect note and check authenticity</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pb-4">
+      <div class="info-grid">
+        <article class="info-card">
+          <h3>Why this screen matters</h3>
+          <p class="mb-0 muted-copy">A clearer interface reduces mistakes during upload and makes it easier to trust what the app is reporting back.</p>
+        </article>
+        <article class="info-card">
+          <h3>How to prepare images</h3>
+          <p class="mb-0 muted-copy">Keep the note flat, avoid heavy blur, and use even lighting so visual features remain readable.</p>
+        </article>
+        <article class="info-card">
+          <h3>What you get back</h3>
+          <p class="mb-0 muted-copy">The results page shows the detected denomination, authenticity result, storage folder, and a summary of the genuine amount detected.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    const fileInput = document.getElementById("image");
+    const fileFeedback = document.getElementById("file-feedback");
+
+    fileInput.addEventListener("change", function () {
+      if (!fileInput.files.length) {
+        fileFeedback.textContent = "No files selected yet.";
+        return;
+      }
+
+      if (fileInput.files.length === 1) {
+        fileFeedback.textContent = "1 file selected: " + fileInput.files[0].name;
+        return;
+      }
+
+      fileFeedback.textContent = fileInput.files.length + " files selected and ready for analysis.";
+    });
+  </script>
+{% endblock %}
